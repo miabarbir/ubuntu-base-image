@@ -2,6 +2,8 @@ FROM ubuntu:20.04
 
 LABEL maintainer="Mia Barbir"
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update \
  && apt-get install -y \
     zsh \
@@ -14,4 +16,3 @@ RUN apt-get update \
     python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
- 
