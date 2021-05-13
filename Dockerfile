@@ -15,5 +15,18 @@ RUN apt-get update \
     python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
-#Install custom environment 
+# Set default user
+ARG USERNAME="usopp"
+ARG USERID="1000"
+ARG GROUPID="3000"
+RUN groupadd -g $GROUPID -r $USERNAME \
+ && useradd --no-log-init -r --gid $GROUPID -u $USERID $USERNAME \
+ && mkdir /home/$USERNAME
+RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
+ && chown -R ${USERNAME}:${USERNAME} /usr/local \
+ && echo ${USERNAME}:${USERNAME} | chpasswd \
+ && chsh -s /usr/bin/zsh ${USERNAME}
+USER ${USERNAME}
+
+# Install custom terminal configuration 
 RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" 
