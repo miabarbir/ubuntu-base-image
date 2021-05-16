@@ -28,5 +28,12 @@ RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
  && chsh -s /usr/bin/zsh ${USERNAME}
 USER ${USERNAME}
 
+WORKDIR /home/${USERNAME}
+
 # Install custom terminal configuration 
-RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" 
+RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+COPY .zshrc .
+COPY .p10k.zsh . 
+
+ENTRYPOINT [ "/usr/bin/zsh" ]
